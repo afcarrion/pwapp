@@ -111,12 +111,25 @@
 
 
     app.getSchedule = function (key, label) {
+
+        var result = {};
+        var response = getForecastFromCache(key).then((cache) =>{
+            if(cache != null){
+                result.key = key;
+                result.label = label;
+                result.created = response._metadata.date;
+                result.schedules = response.result.schedules;
+                app.updateTimetableCard(result);
+            }
+        });
+
         var url = 'https://api-ratp.pierre-grimaud.fr/v3/schedules/' + key;
 
         var request = new XMLHttpRequest();
         request.onreadystatechange = function () {
             if (request.readyState === XMLHttpRequest.DONE) {
                 if (request.status === 200) {
+                    
                     var response = JSON.parse(request.response);
                     var result = {};
                     result.key = key;
