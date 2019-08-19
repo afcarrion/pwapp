@@ -185,3 +185,21 @@
         {key: initialStationTimetable.key, label: initialStationTimetable.label}
     ];
 })();
+
+function getForecastFromCache(value) {
+  if (!('caches' in window)) {
+      return null;
+    }
+    const url = 'https://api-ratp.pierre-grimaud.fr/v4/schedules/' + value;
+    return caches.match(url)
+        .then((response) => {
+          if (response) {
+            return response.json();
+          }
+          return null;
+        })
+        .catch((err) => {
+          console.error('Error getting data from cache', err);
+          return null;
+        });
+}
