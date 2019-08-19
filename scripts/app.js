@@ -216,3 +216,5 @@ function getForecastFromCache(value) {
           return null;
         });
 }
+
+
